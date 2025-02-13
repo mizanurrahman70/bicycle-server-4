@@ -40,13 +40,13 @@ const userSchema = new Schema<IUser>({
         default:'user',
         required:true
       },
-      userStatus:{
-        type:String,
-        enum:['active' , 'inactive'],
+      userStatus: {
+        type: String,
+        enum: ['active', 'inactive'],
         required: true,
-        default:'active'
-
+        default: 'active',
       }
+      
 })
 userSchema.pre('save',async function (this: IUser, next:any) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias

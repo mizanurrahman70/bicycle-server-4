@@ -7,6 +7,6 @@ export interface IUser {
     age:number
     photo?:string | null
     role: 'user' | 'admin'
-    userStatus : 'active | inactive'
+    userStatus : 'active' | 'inactive'
 }
-export type TuserRole = keyof typeof USER_ROLE
+export type TUserRole = keyof typeof USER_ROLE
