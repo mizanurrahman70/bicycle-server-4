@@ -1,48 +1,36 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-
 import catchAsync from '../utilis/catchAsync';
 import User from '../module/user/user.model';
 import { TUserRole } from '../module/user/user.interface';
+import { AuthRequest } from '../types/authRequest'; // Import the custom request type
 
 const auth = (...requiredRoles: TUserRole[]) => {
-  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  return catchAsync(async (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
-    // checking if the token is missing
+
     if (!token) {
-      throw new Error( 'You are not authorized!');
+      throw new Error('You are not authorized!');
     }
 
-    // checking if the given token is valid
-    const decoded = jwt.verify(
-      token,
-      "secret",
-    ) as JwtPayload;
+    const decoded = jwt.verify(token, "secret") as JwtPayload;
+    const { role, email } = decoded;
 
+    const user = await User.findOne({ email });
 
-    const { role, email} = decoded;
-
-    // checking if the user is exist
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new Error('This user is not found !')
-  }
-
-  // checking if the user is inactive
-  const userStatus = user?.userStatus
-
-  if (userStatus === 'inactive') {
-    throw new Error('This user is blocked ! !')
-  }
-
-    if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new Error(
-        'You are not authorized',
-      );
+    if (!user) {
+      throw new Error('This user is not found!');
     }
 
-    req.user = decoded as JwtPayload;
+    if (user.userStatus === 'inactive') {
+      throw new Error('This user is blocked!');
+    }
+
+    if (requiredRoles.length && !requiredRoles.includes(role)) {
+      throw new Error('You are not authorized');
+    }
+
+    req.user = decoded; // Now TypeScript will recognize `req.user`
     next();
   });
 };
