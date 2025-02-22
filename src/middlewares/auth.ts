@@ -9,28 +9,29 @@ const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: AuthRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
 
-    if (!token) {
-      throw new Error('You are not authorized!');
-    }
 
-    const decoded = jwt.verify(token, "secret") as JwtPayload;
-    const { role, email } = decoded;
+    // if (!token) {
+    //   throw new Error('You are not authorized!');
+    // }
 
-    const user = await User.findOne({ email });
+    // const decoded = jwt.verify(token, "secret") as JwtPayload;
+    // const { role, email } = decoded;
 
-    if (!user) {
-      throw new Error('This user is not found!');
-    }
+    // const user = await User.findOne({ email });
 
-    if (user.userStatus === 'inactive') {
-      throw new Error('This user is blocked!');
-    }
+    // if (!user) {
+    //   throw new Error('This user is not found!');
+    // }
 
-    if (requiredRoles.length && !requiredRoles.includes(role)) {
-      throw new Error('You are not authorized');
-    }
+    // if (user.userStatus === 'inactive') {
+    //   throw new Error('This user is blocked!');
+    // }
 
-    req.user = decoded; // Now TypeScript will recognize `req.user`
+    // if (requiredRoles.length && !requiredRoles.includes(role)) {
+    //   throw new Error('You are not authorized');
+    // }
+
+    // req.user = decoded; // Now TypeScript will recognize `req.user`
     next();
   });
 };

@@ -40,6 +40,7 @@ const login = async (payload: { email: string; password: string }) => {
   }
 
   const token = jwt.sign(jwtPayload, "secret", { expiresIn: '1d' });
+ 
 
   return {token, user};
 }

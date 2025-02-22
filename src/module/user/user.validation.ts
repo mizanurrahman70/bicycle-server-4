@@ -10,19 +10,19 @@ const userValidationSchema = z.object({
         required_error: "Email must be provided and must be a string",
     }).email(),
 
-    pasword: z
+    password: z
     .string({
       required_error: 'Password is required for your safety',
     })
     .max(20, { message: 'Password can not be more than 20 characters' }),
 
-    age: z.number({
-        required_error: "Age must be provided and must be a number",
-    }).int().positive(),
+    // age: z.number({
+    //     required_error: "Age must be provided and must be a number",
+    // }).int().positive(),
 
-    photo: z.string({
-        required_error: "Photo must be provided and must be a string",
-    }).optional(),
+    // photo: z.string({
+    //     required_error: "Photo must be provided and must be a string",
+    // }).optional(),
    })
 })
 

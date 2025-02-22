@@ -9,7 +9,7 @@ const createOrder = async (req: Request, res: Response,next:NextFunction) => {
         try {
             const validateOrder= orderValidationSchema.parse(req.body)
             const productObjactId =new mongoose.Types.ObjectId(validateOrder.product)
-            console.log(productObjactId);
+         
         
             const result = await OrderServices.createOrder({
                 ...validateOrder,

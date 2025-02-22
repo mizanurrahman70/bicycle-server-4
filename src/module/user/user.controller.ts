@@ -1,7 +1,9 @@
 import { StatusCodes } from 'http-status-codes'
+import bcrypt from 'bcrypt'
 import catchAsync from '../../utilis/catchAsync'
 import sendResponse from '../../utilis/rendResponse'
 import { userService } from './user.service'
+
 
 const createUser = catchAsync(
 
@@ -49,16 +51,23 @@ const getSingleUser = catchAsync(async (req, res) => {
 })
 
 const updateUser = catchAsync(async (req, res) => {
-  const userId = req.params.userId
-  const body = req.body
-  const result = await userService.updateUser(userId, body)
+  const userId = req.params.userId;
+  const body = req.body;
+
+  // If a new password is provided, hash it before updating
+  if (body.password) {
+    const hashedPassword = await bcrypt.hash(body.password, 12); // 12 salt rounds
+    body.password = hashedPassword; // Replace the plain password with the hashed one
+  }
+
+  const result = await userService.updateUser(userId, body);
 
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     message: 'User updated successfully',
     data: result,
-  })
-})
+  });
+});
 
 const deleteUser = catchAsync(async (req, res) => {
   const userId = req.params.userId
