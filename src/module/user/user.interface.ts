@@ -1,12 +1,15 @@
-import { USER_ROLE } from "./user.constans"
 
-export interface IUser {
-    name:string
-    email:string
-    password:string
-    age:number
-    photo?:string | null
-    role: 'user' | 'admin'
-    userStatus : 'active' | 'inactive'
-}
-export type TUserRole = keyof typeof USER_ROLE
+import { Types } from "mongoose";
+
+export type IUser = {
+    _id?: string | Types.ObjectId;
+    name: string;
+    email: string;
+    password: string;
+    role: "user" | "admin";
+    phone?: string;
+    address?: string;
+    city?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+  }

@@ -25,9 +25,9 @@ const getAllProducts = async (searchTerm?: string) => {
 
 // Get a product by ID
 const getProductById = async (productId: string) => {
-    console.log(productId);
+
     const product = await Product.findById(productId);
-    console.log(product);
+   
     return product;
 };
 
