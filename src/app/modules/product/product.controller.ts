@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Request, Response, NextFunction } from 'express';
 import { ProductServices } from './product.service';
 import { productValidationSchema} from './product.validation';
